@@ -54,31 +54,31 @@ var (
 	CONFIG_PATH_DOCKER = "/config/settings.yaml"
 )
 
-// validateConfig überprüft, ob alle Felder in der Struktur gesetzt sind
+// validateConfig checks whether all fields in the structure are set
 func validateConfig(config interface{}) error {
 	v := reflect.ValueOf(config)
 
-	// Sicherstellen, dass wir einen Zeiger haben und die Struktur referenziert wird
+	// Ensure that we have a pointer and that the structure is referenced
 	if v.Kind() != reflect.Ptr || v.IsNil() {
 		return errors.New("config muss ein nicht-nil Zeiger auf eine Struktur sein")
 	}
 
-	// Auf die Struktur zugreifen
+	// Accessing the structure
 	v = v.Elem()
 
-	// Gehe durch jedes Feld und prüfe, ob es den Zero-Wert hat (nicht gesetzt)
+	// Go through each field and check whether it has the zero value (not set)
 	for i := 0; i < v.NumField(); i++ {
 		field := v.Field(i)
 		fieldType := v.Type().Field(i)
 
-		// Überprüfe verschachtelte Strukturen
+		// Check nested structures
 		if field.Kind() == reflect.Struct {
 			err := validateConfig(field.Addr().Interface())
 			if err != nil {
 				return err
 			}
 		} else {
-			// Prüfe, ob das Feld den Zero-Wert hat
+			// Check whether the field has the zero value
 			if isZero(field) {
 				return errors.New("Feld " + fieldType.Name + " in der Konfiguration darf nicht leer sein")
 			}
@@ -88,7 +88,7 @@ func validateConfig(config interface{}) error {
 	return nil
 }
 
-// isZero prüft, ob ein Feld den Zero-Wert hat (bedeutet, dass es nicht gesetzt wurde)
+// isZero checks whether a field has the zero value (means that it has not been set)
 func isZero(v reflect.Value) bool {
 	return v.Interface() == reflect.Zero(v.Type()).Interface()
 }
@@ -128,19 +128,9 @@ func readConfig(theConfig interface{}) {
 		}
 	}
 
-	// Validierung der Struktur nach dem Unmarshalling
+	// Validation of the structure after unmarshalling
 	err = validateConfig(theConfig)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 }
-
-
-//func main() {
-//    var Load Config
-//    readConfig(&Load)
-
-//	log.Info("Type of variable1:",reflect.TypeOf(Load.Remote.Host))
-    
-    //LogConfig( Load )
-//}
