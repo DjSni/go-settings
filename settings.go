@@ -112,7 +112,7 @@ func testConfigPath() (configPath string) {
     return configPath
 }
 
-func readConfig(theConfig interface{}) {
+func ReadConfig(theConfig interface{}) {
 	// Open YAML file
 	file, err := os.Open(testConfigPath())
 	if err != nil {

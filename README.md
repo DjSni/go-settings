@@ -9,7 +9,7 @@ You have the following 3 options to read the config file:
 
 To load the packet simply enter the console
 ```
-go get ...
+go get github.com/DjSni/go-settings
 ```
 
 Import the module in main.go:
@@ -22,7 +22,7 @@ func init():
 ```go
 func init() {
     var Load Config
-    settings.readConfig(&Load)
+    settings.ReadConfig(&Load)
 }
 ```
 
