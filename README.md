@@ -7,7 +7,18 @@ You have the following 3 options to read the config file:
 - /usr/local/myapp/etc/settings.yaml
 - /config/settings.yaml
 
-To load the settings, execute the following in the func init():
+To load the packet simply enter the console
+```
+go get ...
+```
+
+Import the module in main.go:
+```go
+import "github.com/DjSni/go-settings"
+```
+
+To load the settings, execute the following in the init() function in the main.go
+func init():
 ```go
 func init() {
     var Load Config
