@@ -2,7 +2,7 @@ module github.com/DjSni/go-settings
 
 go 1.24
 
-toolchain go1.26.0
+toolchain go1.26.1
 
 require (
 	github.com/DjSni/go-log v0.2.0
